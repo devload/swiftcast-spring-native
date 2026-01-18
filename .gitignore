@@ -11,16 +11,16 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 # Eclipse
-.classpath
 .project
+.classpath
 .settings/
 bin/
 
 # IntelliJ IDEA
 .idea/
 *.iml
-*.ipr
 *.iws
+*.ipr
 out/
 
 # NetBeans
@@ -37,16 +37,21 @@ nbdist/
 # OS
 .DS_Store
 Thumbs.db
-*~
 
 # Logs
-logs/
 *.log
 
-# Database
+# Sensitive data
+*.env
+*.env.local
+.api_keys.json
+
+# Build output
+build_output.log
+
+# Backup directories
+docs_backup/
+
+# Application data
 *.db
 *.db-journal
-
-# API Keys
-*.env
-.env.local

@@ -43,8 +43,8 @@ public class MainWindow {
         primaryStage.setTitle("SwiftCast - Claude/GLM Proxy");
 
         // 메인 레이아웃
-        VBox root = new VBox(10);
-        root.setPadding(new Insets(15));
+        VBox root = new VBox(20);
+        root.setPadding(new Insets(20));
 
         // 프록시 제어 섹션
         TitledPane proxyPane = createProxyControlPane();
@@ -57,7 +57,11 @@ public class MainWindow {
 
         root.getChildren().addAll(proxyPane, accountPane, backupPane);
 
-        Scene scene = new Scene(root, 700, 800);
+        Scene scene = new Scene(root, 750, 850);
+
+        // CSS 스타일 적용
+        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -68,29 +72,37 @@ public class MainWindow {
     }
 
     private TitledPane createProxyControlPane() {
-        VBox content = new VBox(10);
-        content.setPadding(new Insets(10));
+        VBox content = new VBox(15);
+        content.setPadding(new Insets(0));
+        content.getStyleClass().add("card-content");
 
         statusLabel = new Label("프록시 상태: 중지됨");
-        statusLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        statusLabel.getStyleClass().add("label-stopped");
 
         toggleProxyButton = new Button("프록시 시작");
+        toggleProxyButton.getStyleClass().add("button-success");
         toggleProxyButton.setOnAction(e -> toggleProxy());
+        toggleProxyButton.setPrefWidth(150);
 
         Label portLabel = new Label("포트: 8080");
+        portLabel.getStyleClass().add("label-info");
 
         content.getChildren().addAll(statusLabel, toggleProxyButton, portLabel);
 
-        TitledPane pane = new TitledPane("프록시 제어", content);
+        TitledPane pane = new TitledPane("🚀 프록시 제어", content);
         pane.setCollapsible(false);
         return pane;
     }
 
     private TitledPane createAccountManagementPane() {
-        VBox content = new VBox(10);
-        content.setPadding(new Insets(10));
+        VBox content = new VBox(15);
+        content.setPadding(new Insets(0));
+        content.getStyleClass().add("card-content");
 
         // 계정 목록
+        Label listLabel = new Label("계정 목록");
+        listLabel.getStyleClass().add("label-title");
+
         accountListView = new ListView<>();
         accountListView.setPrefHeight(150);
         accountListView.setCellFactory(param -> new ListCell<>() {
@@ -100,17 +112,21 @@ public class MainWindow {
                 if (empty || account == null) {
                     setText(null);
                 } else {
-                    String activeMarker = account.getIsActive() ? "[활성] " : "";
+                    String activeMarker = account.getIsActive() ? "✓ " : "";
                     setText(activeMarker + account.getName() + " - " + account.getBaseUrl());
+                    setStyle(account.getIsActive() ? "-fx-font-weight: bold;" : "");
                 }
             }
         });
 
         // 버튼들
-        HBox buttons = new HBox(5);
-        Button addButton = new Button("계정 추가");
-        Button switchButton = new Button("활성화");
-        Button deleteButton = new Button("삭제");
+        HBox buttons = new HBox(10);
+        Button addButton = new Button("➕ 계정 추가");
+        addButton.getStyleClass().add("button");
+        Button switchButton = new Button("✓ 활성화");
+        switchButton.getStyleClass().add("button-success");
+        Button deleteButton = new Button("🗑 삭제");
+        deleteButton.getStyleClass().add("button-danger");
 
         addButton.setOnAction(e -> showAddAccountDialog());
         switchButton.setOnAction(e -> switchSelectedAccount());
@@ -118,18 +134,22 @@ public class MainWindow {
 
         buttons.getChildren().addAll(addButton, switchButton, deleteButton);
 
-        content.getChildren().addAll(new Label("계정 목록:"), accountListView, buttons);
+        content.getChildren().addAll(listLabel, accountListView, buttons);
 
-        TitledPane pane = new TitledPane("계정 관리", content);
+        TitledPane pane = new TitledPane("👤 계정 관리", content);
         pane.setCollapsible(false);
         return pane;
     }
 
     private TitledPane createBackupManagementPane() {
-        VBox content = new VBox(10);
-        content.setPadding(new Insets(10));
+        VBox content = new VBox(15);
+        content.setPadding(new Insets(0));
+        content.getStyleClass().add("card-content");
 
         // 백업 목록
+        Label listLabel = new Label("Claude 설정 백업");
+        listLabel.getStyleClass().add("label-title");
+
         backupListView = new ListView<>();
         backupListView.setPrefHeight(200);
         backupListView.setCellFactory(param -> new ListCell<>() {
@@ -141,16 +161,19 @@ public class MainWindow {
                 } else {
                     String date = DATE_FORMATTER.format(Instant.ofEpochSecond(backup.getTimestamp()));
                     String size = formatFileSize(backup.getSize());
-                    setText(date + " (" + size + ")");
+                    setText("📁 " + date + " (" + size + ")");
                 }
             }
         });
 
         // 버튼들
-        HBox buttons = new HBox(5);
-        Button backupButton = new Button("백업 생성");
-        Button restoreButton = new Button("복원");
-        Button deleteButton = new Button("삭제");
+        HBox buttons = new HBox(10);
+        Button backupButton = new Button("💾 백업 생성");
+        backupButton.getStyleClass().add("button");
+        Button restoreButton = new Button("↩ 복원");
+        restoreButton.getStyleClass().add("button-warning");
+        Button deleteButton = new Button("🗑 삭제");
+        deleteButton.getStyleClass().add("button-danger");
 
         backupButton.setOnAction(e -> createBackup());
         restoreButton.setOnAction(e -> restoreSelectedBackup());
@@ -158,9 +181,9 @@ public class MainWindow {
 
         buttons.getChildren().addAll(backupButton, restoreButton, deleteButton);
 
-        content.getChildren().addAll(new Label("Claude 설정 백업:"), backupListView, buttons);
+        content.getChildren().addAll(listLabel, backupListView, buttons);
 
-        TitledPane pane = new TitledPane("백업 관리", content);
+        TitledPane pane = new TitledPane("💾 백업 관리", content);
         pane.setCollapsible(false);
         return pane;
     }
@@ -180,10 +203,16 @@ public class MainWindow {
 
     private void updateProxyStatus() {
         boolean running = proxyServer.isRunning();
-        statusLabel.setText("프록시 상태: " + (running ? "실행 중" : "중지됨"));
-        statusLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: " +
-                (running ? "green" : "gray"));
-        toggleProxyButton.setText(running ? "프록시 중지" : "프록시 시작");
+        statusLabel.setText("프록시 상태: " + (running ? "✓ 실행 중" : "● 중지됨"));
+
+        // 스타일 클래스 업데이트
+        statusLabel.getStyleClass().clear();
+        statusLabel.getStyleClass().add(running ? "label-running" : "label-stopped");
+
+        // 버튼 업데이트
+        toggleProxyButton.setText(running ? "⏹ 프록시 중지" : "▶ 프록시 시작");
+        toggleProxyButton.getStyleClass().clear();
+        toggleProxyButton.getStyleClass().add(running ? "button-danger" : "button-success");
     }
 
     private void showAddAccountDialog() {
