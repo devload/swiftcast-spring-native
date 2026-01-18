@@ -38,7 +38,8 @@ Spring Boot 3.x + GraalVM Native Image + JavaFX로 구현된 크로스 플랫폼
 | **백엔드** | Spring Boot 3.2.1 |
 | **프록시** | Spring WebFlux (비동기) |
 | **데이터베이스** | SQLite + JPA |
-| **UI** | JavaFX 21 |
+| **UI** | JavaFX 21 + Custom CSS |
+| **디자인** | Bootstrap-inspired styling |
 | **빌드** | Maven + GraalVM Native Image |
 | **플랫폼** | Windows, macOS, Linux |
 
@@ -165,7 +166,8 @@ swiftcast_springNative/
 │   └── config/
 │       └── WebClientConfig.java       # WebClient 설정
 ├── src/main/resources/
-│   └── application.properties         # Spring 설정
+│   ├── application.properties         # Spring 설정
+│   └── styles.css                     # Bootstrap-inspired UI styles
 ├── pom.xml                             # Maven 빌드 파일
 └── README.md
 ```
@@ -198,23 +200,40 @@ Claude Code
 
 ---
 
-## 🎨 UI 스크린샷
+## 🎨 UI 디자인
 
-### 프록시 제어
-- 프록시 시작/중지
-- 실시간 상태 표시
-- 포트 정보
+### Bootstrap-inspired Modern UI
 
-### 계정 관리
-- 계정 추가/삭제
-- 계정 전환
-- 활성 계정 표시
+**전체 레이아웃:**
+- 🎨 밝은 회색 배경 (#f8f9fa)
+- 📦 흰색 카드 스타일 섹션 (둥근 모서리, 그림자 효과)
+- 💫 부드러운 호버 효과 및 애니메이션
+- 🔤 Segoe UI 폰트 (Windows 네이티브)
 
-### 백업 관리
-- 백업 생성
-- 백업 복원
-- 백업 삭제
-- 타임스탬프 및 크기 표시
+**🚀 프록시 제어 섹션:**
+- ✓ 실시간 상태 표시 (초록색/회색)
+- ▶ 프록시 시작 버튼 (초록색)
+- ⏹ 프록시 중지 버튼 (빨간색)
+- 📍 포트 정보 (파란색)
+
+**👤 계정 관리 섹션:**
+- ✓ 활성 계정 체크마크 및 볼드체 표시
+- ➕ 계정 추가 (Primary Blue)
+- ✓ 활성화 (Success Green)
+- 🗑 삭제 (Danger Red)
+
+**💾 백업 관리 섹션:**
+- 📁 백업 파일 아이콘
+- 💾 백업 생성 (Primary Blue)
+- ↩ 복원 (Warning Yellow)
+- 🗑 삭제 (Danger Red)
+
+**컬러 팔레트:**
+- Primary: #007bff (파란색)
+- Success: #28a745 (초록색)
+- Danger: #dc3545 (빨간색)
+- Warning: #ffc107 (노란색)
+- Secondary: #6c757d (회색)
 
 ---
 
